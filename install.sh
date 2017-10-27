@@ -3,17 +3,18 @@
         ##      ##    or <http://opensource.org/licenses/MIT>
         ##      ##
 ##########      ############################################################# shaduzlabs.com #######
+#!/bin/bash
 
 platform='unknown'
 unamestr=`uname`
-if [[ "$unamestr" == 'Linux' ]]; then
+if [[ "$unamestr" = 'Linux' ]]; then
   if [ ! -d "/home/pi/" ];
     then
       platform='linux'
     else
       platform='linux-rpi'
   fi
-elif [[ "$unamestr" == 'Darwin' ]];
+elif [[ "$unamestr" = 'Darwin' ]];
   then
     which -s brew
     if [[ $? != 0 ]] ;
@@ -24,7 +25,7 @@ elif [[ "$unamestr" == 'Darwin' ]];
     platform='osx'
 fi
 
-if [ $platform == "unknown" ];
+if [ $platform = "unknown" ];
   then
     echo ""
     echo -e "[ \033[1m\033[31mERROR\033[m ] This install script is not compatible with the current platform."
@@ -67,7 +68,7 @@ echo ""
 echo ""
 echo ""
 echo -e "[ \033[1m\033[96mpink\033[m ] Install dependencies --------------------------------------------------"
-if [ $platform == "osx" ];
+if [ $platform = "osx" ];
   then
     brew install cmake
   else
@@ -79,7 +80,7 @@ echo ""
 echo ""
 echo ""
 echo -e "[ \033[1m\033[96mpink\033[m ] Install RaspAP --------------------------------------------------------"
-if [ $platform == "linux-rpi" ];
+if [ $platform = "linux-rpi" ];
   then
     wget -q https://git.io/vDr0i -O /tmp/raspap && bash /tmp/raspap
 fi
@@ -116,7 +117,7 @@ echo -e "[ \033[1m\033[96mpink\033[m ] Build pink and install the binary and the
 rm -rf build
 mkdir build
 cd build
-if [ $1 == "no-ui" ]
+if [ $1 = "no-ui" ]
   then
     cmake -DCMAKE_BUILD_TYPE=Release -DUSE_PI_ZERO=OFF -DUSE_WEBSOCKET=ON -DJUST_INSTALL_CEREAL=ON ..
   else
@@ -124,7 +125,7 @@ if [ $1 == "no-ui" ]
     cmake -DCMAKE_BUILD_TYPE=Release -DUSE_PI_ZERO=ON -DUSE_WEBSOCKET=ON -DJUST_INSTALL_CEREAL=ON ..
 fi
 make
-if [ $platform == "linux-rpi" ];
+if [ $platform = "linux-rpi" ];
   then
     sudo make install
     sudo update-rc.d pink defaults
@@ -135,7 +136,7 @@ echo ""
 echo ""
 echo ""
 echo -e "[ \033[1m\033[96mpink\033[m ] Update device configuration -------------------------------------------"
-if [ $platform == "linux-rpi" ];
+if [ $platform = "linux-rpi" ];
   then
     sudo cp --backup=numbered support/hostapd.conf /etc/hostapd/.
     sudo cp -r support/html/* /var/www/html/.
@@ -145,7 +146,7 @@ echo ""
 echo ""
 echo ""
 echo -e "[ \033[1m\033[96mpink\033[m ] Optimize system configuration -----------------------------------------"
-if [ $platform == "linux-rpi" ];
+if [ $platform = "linux-rpi" ];
   then
     echo -n performance | sudo tee /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 fi
@@ -153,7 +154,7 @@ fi
 echo ""
 echo ""
 echo ""
-if [ $platform == "linux-rpi" ];
+if [ $platform = "linux-rpi" ];
   then
     echo -e "[ \033[1m\033[96mpink\033[m ] Installation completed, please reboot now."
   else
