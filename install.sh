@@ -7,14 +7,14 @@
 
 platform='unknown'
 unamestr=`uname`
-if [[ "$unamestr" = 'Linux' ]]; then
+if [ "$unamestr" = 'Linux' ]; then
   if [ ! -d "/home/pi/" ];
     then
       platform='linux'
     else
       platform='linux-rpi'
   fi
-elif [[ "$unamestr" = 'Darwin' ]];
+elif [ "$unamestr" = 'Darwin' ];
   then
     which -s brew
     if [[ $? != 0 ]] ;
@@ -76,13 +76,23 @@ if [ $platform = "osx" ];
     sudo apt-get install -y --force-yes cmake wiringpi
 fi
 
+
+# RaspAP
+
+# Original repository:
+# https://github.com/billz/raspap-webgui
+# Currently using shaduzlabs fork of RaspAP:
+# https://github.com/shaduzlabs/raspap-webgui/
+
 echo ""
 echo ""
 echo ""
 echo -e "[ \033[1m\033[96mpink\033[m ] Install RaspAP --------------------------------------------------------"
 if [ $platform = "linux-rpi" ];
   then
-    wget -q https://git.io/vDr0i -O /tmp/raspap && bash /tmp/raspap
+    # Updated RaspAP to work with php7.0-cgi instead of php5
+    # wget -q https://git.io/vDr0i -O /tmp/raspap && bash /tmp/raspap
+    bash support/installers/rasap
 fi
 
 echo ""
