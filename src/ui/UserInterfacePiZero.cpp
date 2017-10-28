@@ -126,10 +126,15 @@ void wiringPiISR(int pin_, int mode_, void (*fn_)(void))
 #endif
 
 inline void writeToDisplay(unsigned digit_, char c_, bool dot_)
+// Reversed HIGH and LOW values within the function
+// because of Display replacement with ACSA02
+// Changed polarity inversion for kPinDisplayDigits and kPinDisplaySegments
 {
   for (unsigned i = 0; i < kDisplayNumDigits; i++)
   {
-    digitalWrite(kPinDisplayDigits[i], (i == digit_ ? LOW : HIGH));
+    // digitalWrite(kPinDisplayDigits[i], (i == digit_ ? LOW : HIGH));
+    digitalWrite(kPinDisplayDigits[i], (i == digit_ ? HIGH : LOW));
+
   }
 
   uint8_t charNum = static_cast<uint8_t>(c_);
@@ -142,7 +147,8 @@ inline void writeToDisplay(unsigned digit_, char c_, bool dot_)
   {
     for (unsigned i = 0; i < kDisplayNumSegments; i++)
     {
-      digitalWrite(kPinDisplaySegments[i], LOW);
+      // digitalWrite(kPinDisplaySegments[i], LOW);
+      digitalWrite(kPinDisplaySegments[i], HIGH);
     }
   }
   else
@@ -150,7 +156,8 @@ inline void writeToDisplay(unsigned digit_, char c_, bool dot_)
     auto charData = kDisplayFontData[charNum - 45] | (dot_ ? 0b10000000 : 0);
     for (unsigned i = 0; i < kDisplayNumSegments; i++)
     {
-      digitalWrite(kPinDisplaySegments[i], ((charData & (1 << i)) > 0) ? HIGH : LOW);
+      // digitalWrite(kPinDisplaySegments[i], ((charData & (1 << i)) > 0) ? HIGH : LOW);
+      digitalWrite(kPinDisplaySegments[i], ((charData & (1 << i)) > 0) ? LOW : HIGH);
     }
   }
 }
