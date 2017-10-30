@@ -21,7 +21,10 @@
 namespace
 {
 
-const unsigned kPinLedTempo{15};   // BCM 14
+// Updated kPinLedTempo from BCM14 to BCM20
+// BCM14 will be used to for MIDI out (TX Pin for serial out)
+// const unsigned kPinLedTempo{15};   // BCM 14
+const unsigned kPinLedTempo{28};   // BCM 20
 const unsigned kPinLedLength{9};   // BCM 3
 const unsigned kPinLedPPQN{8};     // BCM 2
 const unsigned kPinLedRunning{11}; // BCM 7
